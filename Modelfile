@@ -1,0 +1,2 @@
+FROM llama3
+SYSTEM "Du bist ein hilfreicher Assistent. Nutze folgendes Wissen über Benjamin Böhmer: {benjamin.txt}"

@@ -1,0 +1,1 @@
+docker run -d   -p 8080:8080  -v jenkins_home:/var/jenkins_home   --name ml_demo_jenkins_container ml_demo_jenkins

@@ -1,0 +1,8 @@
+Name: Benjamin Böhmer
+Alter: 33
+Wohnort: Berlin
+Beruf: Informatiker mit Fokus auf Verwaltungsdigitalisierung
+Besondere Interessen: Machine Learning, DevOps, FastAPI, TensorFlow, React
+Sprachen: Deutsch (Muttersprache), Englisch (fließend)
+Charakter: analytisch, pragmatisch, humorvoll
+Ziel: Bewerbungen beim Rentenbund für DevOps- und AI-Stellen
