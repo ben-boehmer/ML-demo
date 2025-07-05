@@ -1,0 +1,33 @@
+---
+- name: Docker Compose Deployment (via Shell)
+  hosts: localhost
+  become: false
+  vars:
+    compose_dir: "/home/benjamin/ml-demo"
+    compose_file: "docker-compose.yml"
+
+  tasks:
+    - name: Prüfe, ob Docker Compose verfügbar ist
+      shell: docker compose version
+      register: compose_version
+      failed_when: compose_version.rc != 0
+      changed_when: false
+
+    - name: Zeige Docker Compose-Version
+      debug:
+        msg: "{{ compose_version.stdout }}"
+
+    - name: Docker Compose - Pull Images
+      shell: docker compose -f {{ compose_file }} pull
+      args:
+        chdir: "{{ compose_dir }}"
+
+    - name: Docker Compose - Build Images
+      shell: docker compose -f {{ compose_file }} build
+      args:
+        chdir: "{{ compose_dir }}"
+
+    - name: Docker Compose - Up (detached)
+      shell: docker compose -f {{ compose_file }} up -d
+      args:
+        chdir: "{{ compose_dir }}"

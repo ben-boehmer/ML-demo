@@ -1,0 +1,35 @@
+#version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/app:/app/app
+    environment:
+      - OLLAMA_URL=http://host.docker.internal:11434/api/chat
+    #depends_on:
+    #  - ollama
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:8000
+
+  #ollama:
+  #  image: ollama/ollama
+  #  ports:
+  #    - "11434:11434"
+  #  volumes:
+  #    - ollama_data:/root/.ollama
+
+#volumes:
+#  ollama_data:

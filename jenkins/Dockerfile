@@ -6,7 +6,7 @@ USER root
 
 # Python installieren
 RUN apt-get update && apt-get install -y \
-    python3 python3-pip \
+    python3 python3-pip python3-venv\
     nodejs npm \
     curl git && \
     apt-get clean
@@ -14,6 +14,6 @@ RUN apt-get update && apt-get install -y \
 # Optional: Docker CLI hinzufügen, wenn Jenkins Docker benutzen soll
 RUN curl -fsSL https://get.docker.com | sh
 
-EXPOSE 8080 5173
+EXPOSE 8000 8080 5173
 
 USER jenkins

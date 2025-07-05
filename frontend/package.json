@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run"
+
   },
   "dependencies": {
     "react": "^18.2.0",
