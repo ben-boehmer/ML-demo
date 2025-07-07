@@ -2,7 +2,10 @@
 
 import requests
 
-OLLAMA_URL = "http://localhost:11434/api/chat"
+#OLLAMA_URL = "http://localhost:11434/api/chat"
+
+import os
+OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434/api/chat")
 
 # Benjamin-Daten beim Start laden
 try:
@@ -31,7 +34,7 @@ def respond(prompt: str) -> str:
     }
 
     try:
-        response = requests.post(OLLAMA_URL, json=payload, headers=headers, timeout=60)
+        response = requests.post(OLLAMA_URL, json=payload, headers=headers, timeout=60000)
         response.raise_for_status()
         data = response.json()
         return data["message"]["content"]

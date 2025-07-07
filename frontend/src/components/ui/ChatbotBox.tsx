@@ -17,21 +17,41 @@ export default function ChatbotBox() {
     setLoading(true);
     setInput("");
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 300_000); // 5 Minuten
+
+    const apiUrl = import.meta.env.VITE_API_URL;
+    console.log("API URL:", apiUrl); // ← das soll "http://backend:8000" zeigen
+
+    
     try {
-      const res = await fetch("http://localhost:8000/chat", {
+      const res = await fetch(apiUrl + "/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: userMsg.text }),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeout);
+
+      if (!res.ok) throw new Error("Fehlerhafte Antwort vom Server");
+
       const data = await res.json();
       const botMsg = { role: "bot", text: data.response };
       setMessages((prev) => [...prev, botMsg]);
-    } catch {
-      setMessages((prev) => [...prev, { role: "bot", text: "Fehler bei der Anfrage." }]);
+    } catch (err) {
+      const msg =
+        err.name === "AbortError"
+          ? "Zeitüberschreitung bei der Anfrage."
+          : "Fehler bei der Anfrage.";
+      setMessages((prev) => [...prev, { role: "bot", text: msg }]);
+      console.log("API URL:", import.meta.env.VITE_API_URL);
+
     } finally {
       setLoading(false);
     }
   }
+
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") handleSend();
@@ -41,7 +61,7 @@ export default function ChatbotBox() {
     <div style={{ border: "1px solid #ccc", padding: 16, borderRadius: 8 }}>
       <h2 style={{ fontWeight: "bold", marginBottom: 4 }}>🤖 Chatbot - LLM</h2>
       <p style={{ fontSize: 14, marginBottom: 12, color: "#666" }}>
-        Frag mich etwas zu Benjamin Böhmer
+        Frag mich etwas zu Benjamin Böhmer - je nach System kann die Antwort lange dauern.
       </p>
       <div
         style={{
