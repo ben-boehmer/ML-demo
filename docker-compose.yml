@@ -9,27 +9,33 @@ services:
     volumes:
       - ./backend/app:/app/app
     environment:
-      - OLLAMA_URL=http://host.docker.internal:11434/api/chat
-    #depends_on:
-    #  - ollama
+      - OLLAMA_URL=http://ollama:11434/api/chat
+    depends_on:
+      - ollama
 
   frontend:
     build:
       context: ./frontend
+      args:
+        VITE_API_URL: http://backend:8000
     ports:
       - "5173:5173"
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    
     environment:
       - VITE_API_URL=http://localhost:8000
 
-  #ollama:
-  #  image: ollama/ollama
-  #  ports:
-  #    - "11434:11434"
-  #  volumes:
-  #    - ollama_data:/root/.ollama
 
-#volumes:
-#  ollama_data:
+  ollama:
+    image: ollama-with-llama3
+    build:
+      context: ./ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+volumes:
+  ollama_data:
